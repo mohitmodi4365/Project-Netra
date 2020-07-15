@@ -3,6 +3,7 @@ from . import views
 urlpatterns = [
     path("index",views.index,name="index"),
     path('',views.change_det,name='change_det'),
+    path('change_detection',views.change_detection,name='change_detection'),
     path('fea_ext',views.fea_ext,name='fea_ext'),
     path('login',views.login,name='login'),
 ]

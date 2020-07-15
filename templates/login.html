@@ -4,7 +4,7 @@
 <html lang="en">
 
 <head>
-	<title>H2scopy</title>
+	<title>Netra</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--===============================================================================================-->
@@ -36,11 +36,11 @@
 <body>
 
 	<div class="limiter">
-		<div class="container-login100" style="background-image: url('{% static 'loginn/images/bg-01.jpg' %}'">
+		<div class="container-login100" style="background-image: url('{% static 'loginn/images/back.jpg' %}'">
 			<div class="wrap-login100">
 				<form class="login100-form validate-form" name="myform" action="{% url 'change_det' %}" onsubmit="return validateform()">
 					<span class="login100-form-logo">
-						<i class="zmdi zmdi-landscape"></i>
+						<img src="{% static 'dist/img/logo.png' %}" width="300px" height="280px" class="brand-image img-circle elevation-4" style="opacity: .8">
 					</span>
 
 					<span class="login100-form-title p-b-34 p-t-27">
