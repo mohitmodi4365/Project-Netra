@@ -33,6 +33,22 @@ def change_detection(request):
         
 
 
+def feature_extraction(request):
+
+    
+        for file in request.FILES.getlist('fmyfile'):
+                fs = FileSystemStorage()
+                filename = fs.save(file.name, file)
+                print("##3",filename)
+        
+
+        
+    
+        return render(request,"fea_ext.html")  
+        
+
+
+
 
 def fea_ext(request):
   return render(request,"fea_ext.html")
