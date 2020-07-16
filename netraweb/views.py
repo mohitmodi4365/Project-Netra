@@ -15,6 +15,9 @@ def change_det(request):
 def fea_ext(request):
   return render(request,"fea_ext.html")
 
+def loader(request):
+  return render(request,"loader.html")
+
 def change_detection(request):
 
     
