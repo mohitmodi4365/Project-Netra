@@ -18,6 +18,9 @@ def fea_ext(request):
 def loader(request):
   return render(request,"loader.html")
 
+def change_detected_result(request):
+  return render(request,"change_detected_result.html")
+
 def change_detection(request):
 
     
@@ -49,12 +52,6 @@ def feature_extraction(request):
     
         return render(request,"fea_ext.html")  
         
-
-
-
-
-def fea_ext(request):
-  return render(request,"fea_ext.html")
 
 
 def login(request):  
