@@ -7,4 +7,5 @@ urlpatterns = [
     path('feature_extraction',views.feature_extraction,name='feature_extraction'),
     path('fea_ext',views.fea_ext,name='fea_ext'),
     path('login',views.login,name='login'),
+    path('loader',views.loader,name='loader'),
 ]
