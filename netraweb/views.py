@@ -12,6 +12,9 @@ def index(request):
 def change_det(request):
   return render(request,"change_det.html")
 
+def fea_ext(request):
+  return render(request,"fea_ext.html")
+
 def change_detection(request):
 
     
