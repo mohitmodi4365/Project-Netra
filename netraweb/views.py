@@ -18,13 +18,11 @@ def fea_ext(request):
 def loader(request):
   return render(request,"loader.html")
 
-<<<<<<< HEAD
 def new_login(request):
   return render(request,"new_login.html")
-=======
+  
 def change_detected_result(request):
   return render(request,"change_detected_result.html")
->>>>>>> 6b5660382ed0797fed8a9d7d3750e2648eb5237c
 
 def change_detection(request):
 
