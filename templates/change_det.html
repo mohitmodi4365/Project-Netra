@@ -4,119 +4,128 @@
 {% load static %}
 
 
-    <div class="content-wrapper">
-      <!-- Main content -->
-      <section class="content-header">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-6">
-              <h1>Change_Det</h1>
-            </div>
-            <div class="col-sm-6">
-              <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active"><a href="#">Change_Det</a></li>
-              </ol>
-            </div>
-          </div>
-        </div><!-- /.container-fluid -->
-      </section>
-      <section class="content">
-
-        <!-- Default box -->
-        <div class="card">
-          <div class="card-header">
-  
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                <i class="fas fa-minus"></i></button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                <i class="fas fa-times"></i></button>
-            </div>
-          </div>
-          <div class="card-body" style="">
-            <!-- <button type="button" name="check_sentiments" id="check_sentiments"  onclick="">Check Sentiments</button> -->
-
-            <div class="row">
-              <div class="ImageContainer" id="ImageContainer">
-
-              </div>
-              <div class="ImageContainer2" id="ImageContainer2">
-  
-              </div>
-              
-
-            </div>
-          
-            
-            
-            <form role="form" id="quickForm" action="fea_ext" method = "POST" enctype="multipart/form-data">
-
-
-
-              <div>
-                {% csrf_token %}
-              <input type="file" name="myfile" accept="image/*" multiple id="inputfile"/>
-                <input style="padding-left : 230px" type="file" name="myfile2" accept="image/*" multiple id="inputfile2"/>
-                </div>
-              <div style="padding-top : 20px;">
-                <input type="submit" class="btn btn-primary" value="Detect Change" />
-
-              </div>
-
-              </div>
-            </form>
-          </div>
-          <!-- /.card-body -->
+<div class="content-wrapper">
+  <!-- Main content -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Change Detecion</h1>
         </div>
-        <!-- /.card -->
-  
-      </section>
-      <!-- /.content -->
-      <!-- /.content -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active"><a href="#">Change_Det</a></li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <section class="content">
 
+    <!-- Default box -->
+    <div class="card">
+      <div class="card-header">
+
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+            <i class="fas fa-minus"></i></button>
+          <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+            <i class="fas fa-times"></i></button>
+        </div>
+      </div>
+      <div class="card-body" style="">
+        <!-- <button type="button" name="check_sentiments" id="check_sentiments"  onclick="">Check Sentiments</button> -->
+        <div class="row mb-3">
+
+          <div class="col-sm-6">
+            <div class="ImageContainer" id="ImageContainer">
+
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="ImageContainer2" id="ImageContainer2">
+
+            </div>
+
+
+          </div>
+        </div>
+
+
+        <form role="form" id="quickForm" action="{% url 'change_detection'%}" method="POST"
+          enctype="multipart/form-data">
+
+
+
+          <div>
+            {% csrf_token %}
+            <div class="row mb-3">
+
+              <div class="col-sm-5 center">
+                <input type="file" name="myfile" accept="image/*" multiple id="inputfile" />
+              </div>
+              <div class="col-sm-5">
+
+                <input type="file" name="myfile2" accept="image/*" multiple
+                  id="inputfile2" style="padding-left : 105px" />
+              </div>
+            </div>
+            <div style="padding-top : 20px;">
+              <input type="submit" class="btn btn-primary" value="Detect Change" />
+
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <!-- /.card-body -->
     </div>
-    <!-- /.content-wrapper -->
-    <script>
-      
-  
-        document.getElementById("inputfile").addEventListener('change', (event) => {
-            var v=document.getElementById("inputfile").files;
-            console.log(v);
-      
-            document.getElementById("ImageContainer").innerHTML = "";
-            for(i=0;i<v.length;i++){
-      
-                var img=document.createElement("img");
-                img.src=URL.createObjectURL(v[i]);
-      
-                img.style.width="500px";
-                img.style.padding="7px 3px 7px 3px";
-                img.style.height="400px";
-      
-                document.getElementById("ImageContainer").appendChild(img);
-            }
-        });
+    <!-- /.card -->
 
-        document.getElementById("inputfile2").addEventListener('change', (event) => {
-          var v=document.getElementById("inputfile2").files;
-          console.log(v);
-    
-          document.getElementById("ImageContainer2").innerHTML = "";
-          for(i=0;i<v.length;i++){
-    
-              var img=document.createElement("img");
-              img.src=URL.createObjectURL(v[i]);
-    
-              img.style.width="500px";
-              img.style.padding="7px 3px 7px 3px";
-              img.style.height="400px";
-    
-              document.getElementById("ImageContainer2").appendChild(img);
-          }
-      });
-    
-    </script>
-    
- 
-    {% endblock %}
+  </section>
+  <!-- /.content -->
+  <!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
+<script>
+  document.getElementById("inputfile").addEventListener('change', (event) => {
+    var v = document.getElementById("inputfile").files;
+    console.log(v);
+
+    document.getElementById("ImageContainer").innerHTML = "";
+    for (i = 0; i < v.length; i++) {
+
+      var img = document.createElement("img");
+      img.src = URL.createObjectURL(v[i]);
+
+      img.style.width = "500px";
+      img.style.padding = "7px 3px 7px 3px";
+      img.style.height = "300px";
+
+      document.getElementById("ImageContainer").appendChild(img);
+    }
+  });
+
+  document.getElementById("inputfile2").addEventListener('change', (event) => {
+    var v = document.getElementById("inputfile2").files;
+    console.log(v);
+
+    document.getElementById("ImageContainer2").innerHTML = "";
+    for (i = 0; i < v.length; i++) {
+
+      var img = document.createElement("img");
+      img.src = URL.createObjectURL(v[i]);
+
+      img.style.width = "500px";
+      img.style.padding = "7px 3px 7px 3px";
+      img.style.height = "300px";
+
+      document.getElementById("ImageContainer2").appendChild(img);
+    }
+  });
+</script>
+
+
+{% endblock %}
