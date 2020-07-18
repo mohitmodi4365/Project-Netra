@@ -9,4 +9,5 @@ urlpatterns = [
     path('fea_ext',views.fea_ext,name='fea_ext'),
     path('login',views.login,name='login'),
     path('loader',views.loader,name='loader'),
+    path('new_login',views.new_login,name='new_login'),
 ]

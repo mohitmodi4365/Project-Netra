@@ -20,6 +20,10 @@ def loader(request):
 
 def change_detection_result(request):
   return render(request,"change_detection_result.html")
+  
+def new_login(request):
+  return render(request,"new_login.html")
+
 
 def change_detection(request):
 
