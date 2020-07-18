@@ -18,8 +18,8 @@ def fea_ext(request):
 def loader(request):
   return render(request,"loader.html")
 
-def change_detected_result(request):
-  return render(request,"change_detected_result.html")
+def change_detection_result(request):
+  return render(request,"change_detection_result.html")
 
 def change_detection(request):
 
