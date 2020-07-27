@@ -38,11 +38,11 @@
   <div >
   <div class="limiter" id="login">
     <div class="container-login100">
-      <div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55" style="background-color: white;">
-        <form class="login100-form validate-form flex-sb flex-w" >
+      <div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55" style="background-color: white;width : 407px">
+        <form class="login100-form validate-form flex-sb flex-w" action="{% url 'change_det' %}" onsubmit="return validateform()">
           
-          <span class="login100-form-title p-b-32"  style="font-size: 20" style="color: black;">
-            <i class="fa fa-user">&nbsp Account Login </i>
+          <span class="login100-form-title p-b-32"  style="font-size: 15" style="color: black;">
+            <i class="fa fa-user">&nbsp Login </i>
           </span>
 
 
@@ -61,7 +61,7 @@
             <span class="btn-show-pass">
               <i class="fa fa-eye"></i>
             </span>
-            <input class="input100" type="password" name="pass" >
+            <input class="input100" type="password" name="password" >
             <span class="focus-input100"></span>
           </div>
           
@@ -95,27 +95,29 @@
   <div id="dropDownSelect1"></div>
 </div>
 </div>
-<!-- scripts -->
-<script src="{% static 'demo/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
-<!--===============================================================================================-->
-  <script src="{% static 'demo/vendor/animsition/js/animsition.min.js' %}"></script>
-<!--===============================================================================================-->
-  <script src="demo/vendor/bootstrap/js/popper.js' %}"></script>
-  <script src="{% static 'demo/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-<!--===============================================================================================-->
-  <script src="{% static 'demo/vendor/select2/select2.min.js' %}"></script>
-<!--===============================================================================================-->
-  <script src="{% static 'demo/vendor/daterangepicker/moment.min.js' %}"></script>
-  <script src="{% static 'demo/vendor/daterangepicker/daterangepicker.js' %}"></script>
-<!--===============================================================================================-->
-  <script src="{% static 'demo/vendor/countdowntime/countdowntime.js' %}"></script>
-<!--===============================================================================================-->
+<script> 
+  function validateform() {
+    var name = document.myform.username.value;
+    var password = document.myform.password.value;
+    
+    if ((name == null || name == "") || (password == null || password == "")) {
+      alert("Both should not be blank");
+      return false;
+    }
+    else if (name=="admin" && password=="admin") {
+      return true;
+    }
+    else{
+      alert("Incorrect Username/Password !");
+      return false;
+    }
+  } 
+</script>
   <script src="{% static 'demo/js/main.js' %}"></script>
 <script src="{% static 'particles.js' %}"></script>
 <script src="{% static 'demo/js/app.js' %}"></script>
 
 <!-- stats.js -->
-<script src="{% static 'demo/js/lib/stats.js' %}"></script>
 <script>
   var count_particles, stats, update;
   stats = new Stats;

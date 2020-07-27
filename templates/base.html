@@ -8,11 +8,29 @@
   <title>Netra</title>
   <!-- Tell the browser to be responsive to screen width -->
   <link rel="stylesheet" media="screen" href="{% static 'css/style.css' %}">
-  <script src="{% static 'particles.js' %}"></script>
 
+
+	<style>
+		/* This only works with JavaScript, 
+		   if it's not present, don't show loader */
+		.no-js #loader { display: none;  }
+		.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+	</style>
+	
+	
+	
+
+
+
+<!-- stats.js -->
+<script src="{% static 'demo/js/lib/stats.js' %}"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="{% static 'demo/css/util.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'demo/css/main.css' %}">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/load.css' %}">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css' %}">
   <!-- Tempusdominus Bbootstrap 4 -->
@@ -41,7 +59,7 @@
   </style>
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed"  onload="myFunction()">
   <div class="wrapper">
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -112,30 +130,7 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="{% url 'loader' %}" class="nav-link">
-              <i class="nav-icon far fa-plus-square"></i>
-              <p>
-                Loader
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'new_login' %}" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                New Login
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                Time Wise Analysis
-              </p>
-            </a>
-          </li>
+
 
           <li class="nav-item">
             <a href="{% url 'login' %}" class="nav-link">

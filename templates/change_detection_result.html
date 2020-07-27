@@ -2,6 +2,8 @@
 {% block content %}
 
 {% load static %}
+<link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/load.css' %}">
+
 <style>
   * {
     box-sizing: border-box;
@@ -36,7 +38,10 @@
   }
 </style>
 
+
+
 <div class="content-wrapper">
+
   <!-- Main content -->
   <section class="content-header">
     <div class="container-fluid">
@@ -67,19 +72,23 @@
         </div>
       </div>
       <div class="card-body" style="height: 500px;">
+        <div id="loading"></div>
+
         <!-- <button type="button" name="check_sentiments" id="check_sentiments"  onclick="">Check Sentiments</button> -->
         <div class="row mb-3">
 
           <div class="img-comp-container col-sm-6">
-            <div class="img-comp-img">
-              <img src="{% static 'dist/img/motavarachha_before_2016.jpg' %}" width="600" height="340">
+            <div class="img-comp-img" >
+              <img src="/media/{{ i2.img }}" width="600" height="340">
             </div>
             <div class="img-comp-img img-comp-overlay">
-              <img src="{% static 'dist/img/motavarachha_after_2020.jpg' %}" width="600" height="340">
+              <img src="/media/{{ i1.img }}" width="600" height="340">
             </div>
           </div>
-          <div class="col-sm-6">
-            <img class="img-fluid" src="{% static 'dist/img/motavarachha_after_2020.jpg' %}" alt="Photo">
+          <!-- <h1>sdbausgdbuhbshdfjaksdnkasndnaskjndasndjasnkdna {{ MEDIA_URL }}</h1> -->
+
+          <div class="col-sm-6" onload="myFunction()">
+            <img src="/media/{{ i3.img }}" alt="" width="600" height="340">
           </div>
         </div>
       </div>
@@ -92,8 +101,34 @@
   <!-- /.content -->
 
 </div>
-
+	<style>
+		/* This only works with JavaScript, 
+		   if it's not present, don't show loader */
+		.no-js #loader { display: none;  }
+		.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+	</style>
+	
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+	
+	
+	<script src="https://github.com/Modernizr/Modernizr/raw/master/modernizr.js"></script>
+	<script>
+		// Wait for window load
+		$(window).load(function() {
+			// Animate loader off screen
+			$("#loader").animate({
+				top: -200
+			}, 1500);
+		});
+	</script>	
 <script>
+    var preloader = document.getElementById("loading");
+    function myFunction(){
+      preloader.style.display = 'none';
+    };
+
+
   function initComparisons() {
     var x, i;
     /*find all elements with an "overlay" class:*/
