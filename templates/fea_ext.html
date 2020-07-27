@@ -5,6 +5,8 @@
 
 
     <div class="content-wrapper">
+      <div id="loading"></div>
+
       <!-- Main content -->
       <section class="content-header">
         <div class="container-fluid">
@@ -57,7 +59,7 @@
               <input type="file" name="fmyfile" accept="image/*" multiple id="finputfile"/>
                
               <div style="padding-top : 20px;">
-                <input type="submit" class="btn btn-primary" value="Extract features" />
+                <input type="submit" class="btn btn-primary" onclick="loaderdispaly(event)" value="Extract_features" />
 
               </div>
 
@@ -75,7 +77,17 @@
     </div>
     <!-- /.content-wrapper -->
     <script>
-      
+      var preloader = document.getElementById("loading");
+
+  function myFunction() {
+    preloader.style.display = 'none';
+  };
+
+  function loaderdispaly(e) {
+    preloader.style.display = 'block';
+    // setTimeout(()=>{preloader.style.display='none';},);
+  };
+
   
         document.getElementById("finputfile").addEventListener('change', (event) => {
             var v=document.getElementById("finputfile").files;

@@ -42,6 +42,7 @@
 
 <div class="content-wrapper">
 
+
   <!-- Main content -->
   <section class="content-header">
     <div class="container-fluid">
@@ -78,7 +79,7 @@
         <div class="row mb-3">
 
           <div class="img-comp-container col-sm-6">
-            <div class="img-comp-img" >
+            <div class="img-comp-img">
               <img src="/media/{{ i2.img }}" width="600" height="340">
             </div>
             <div class="img-comp-img img-comp-overlay">
@@ -91,6 +92,12 @@
             <img src="/media/{{ i3.img }}" alt="" width="600" height="340">
           </div>
         </div>
+        <form role="form" id="quickForm" action="{% url 'feature_extraction2' %}" method="POST" target="_blank">{% csrf_token %}
+          <input type="hidden" value="{{diff_in_image}}" name="diff_in_image" id="diff_in_image">
+          <input type="hidden" value="{{i1.img}}" name="i1" id="i1">
+          <input type="hidden" value="{{i3.img}}" name="i3" id="i3">
+          <button type="submit" class="btn btn-block bg-gradient-primary">Extract Features</button>
+        </form>
       </div>
       <!-- /.card-body -->
     </div>
@@ -101,32 +108,41 @@
   <!-- /.content -->
 
 </div>
-	<style>
-		/* This only works with JavaScript, 
+<style>
+  /* This only works with JavaScript, 
 		   if it's not present, don't show loader */
-		.no-js #loader { display: none;  }
-		.js #loader { display: block; position: absolute; left: 100px; top: 0; }
-	</style>
-	
-	
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
-	
-	
-	<script src="https://github.com/Modernizr/Modernizr/raw/master/modernizr.js"></script>
-	<script>
-		// Wait for window load
-		$(window).load(function() {
-			// Animate loader off screen
-			$("#loader").animate({
-				top: -200
-			}, 1500);
-		});
-	</script>	
+  .no-js #loader {
+    display: none;
+  }
+
+  .js #loader {
+    display: block;
+    position: absolute;
+    left: 100px;
+    top: 0;
+  }
+</style>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+
+
+<script src="https://github.com/Modernizr/Modernizr/raw/master/modernizr.js"></script>
 <script>
-    var preloader = document.getElementById("loading");
-    function myFunction(){
-      preloader.style.display = 'none';
-    };
+  // Wait for window load
+  $(window).load(function () {
+    // Animate loader off screen
+    $("#loader").animate({
+      top: -200
+    }, 1500);
+  });
+</script>
+<script>
+  var preloader = document.getElementById("loading");
+
+  function myFunction() {
+    preloader.style.display = 'none';
+  };
 
 
   function initComparisons() {

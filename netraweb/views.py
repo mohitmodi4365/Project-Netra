@@ -36,10 +36,18 @@ def fea_ext(request):
 def loader(request):
   return render(request,"loader.html")
 
-def change_detection_result(request,i1,i2,file1,file2):
-        
+def change_detection_result(request):
+  
         render(request,"change_detection_result.html")
   
+
+def feature_extraction_result(request,i3):
+  return render(request,"feature_extraction_result.html")
+
+def feature_extraction_result2(request):
+
+  return render(request,"feature_extraction_result2.html")
+    
 def new_login(request):
   return render(request,"new_login.html")
 
@@ -94,7 +102,7 @@ def change_detection(request):
         i3 = change_d()
         i3.img='F&F '+afterimagename_wo_ext+'.png'
 
-        return render(request,"change_detection_result.html",{'i1':i1,'i2':i2,'i3':i3})
+        return render(request,"change_detection_result.html",{'i1':i1,'i2':i2,'i3':i3,'diff_in_image':diff_in_image})
 
         # return change_detection_result(request,i1,i2,file1,file2)
         # return (request,"/change_detection_result",{'i1' : i1,'i2' : i2,'file1' : file1,'file2':file2})  
@@ -128,10 +136,105 @@ def feature_extraction(request):
         base_image.show()
 
 
+        i3 = change_d()
+        i3.img='mohit.jpg'
+
         
     
-        return render(request,"fea_ext.html")  
+        return render(request,"feature_extraction_result.html",{'i3':i3})
         
+
+def feature_extraction2(request):
+
+    if request.method == 'POST':
+        i1=request.POST.get("i1")
+        i3=request.POST.get("i3")
+        diff_in_image=request.POST.get("diff_in_image")
+        print(i1)
+        print(diff_in_image)
+
+        start = time.time()
+        responsez = str(base64.b64encode(open('media/'+i1,'rb').read()))
+        responsez=responsez[2:]
+        api_url = "http://13.68.181.120:5000/api/score-image"
+        response = requests.post(api_url, json={"imageUrl":responsez, "mode": "0"})
+        # response_Json = response.json()
+        # print(response.json())
+        img=response.json()
+        img=img[2:]
+        fh =open('media/OutDetect.jpg',mode='wb')
+        fh.write(base64.b64decode(img))
+        end = time.time()
+        print('Time Required:'+str(end - start))
+
+        
+        next22=reversefotoDetectron('media/'+diff_in_image)
+        # Out_Detect="Out Detect "+afterimagename
+        output_image_path2=mergeDetectron('media/OutDetect.jpg', 'Some.png',next22, position=(0,0))
+        next33=reversefotoDetectron2(output_image_path2)
+        mergeDetectron('media/'+i1, 'O.D.png',next33, position=(0,0))
+          
+        # base_image = Image.open('media/mohit.jpg')
+        # base_image.show()
+
+
+        # i1 = change_d()
+        # i1.img=i1
+        # i1='media/'+i1
+        
+    
+        return render(request,"feature_extraction_result2.html",{'i1':i1,'i3':i3,'diff_in_image':diff_in_image})
+        
+def reversefotoDetectron(diffimage):
+  img = Image.open(diffimage)
+  img = img.convert("RGBA")
+  datas = img.getdata()
+
+  newData = []
+  for item in datas:
+      if item[0] == 255 and item[1] == 0 and item[2] == 0:
+          newData.append((255, 255, 255, 0))
+      else:
+          newData.append((255, 0, 0, 255))
+        
+  img.putdata(newData)
+  img.save('media/nextDetectron.png', "PNG")
+
+  return 'media/nextDetectron.png'
+
+def reversefotoDetectron2(diffimage):
+  img = Image.open(diffimage)
+  img = img.convert("RGBA")
+  datas = img.getdata()
+
+  newData = []
+  for item in datas:
+      if item[0] == 255 and item[1] == 0 and item[2] == 0:
+          newData.append((255, 255, 255, 0))
+      else:
+          newData.append(item)
+        
+  img.putdata(newData)
+  img.save('media/nextDetectron.png', "PNG")
+
+  return 'media/nextDetectron.png'
+
+
+def mergeDetectron(input_image_path,output_image_path,png_image_path,position):
+
+    base_image = Image.open(input_image_path)
+    png = Image.open(png_image_path)
+    width, height = base_image.size
+
+    transparent = Image.new('RGBA', (width, height), (0,0,0,0))
+    transparent.paste(base_image, (0,0))
+    transparent.paste(png, position, mask=png)
+    if(output_image_path=='O.D.png'):
+      transparent.show()
+    transparent.save('media/'+output_image_path)
+
+    return 'media/'+output_image_path
+
 
 
 
@@ -166,8 +269,8 @@ def merge(input_image_path,output_image_path,png_image_path,position):
     transparent = Image.new('RGBA', (width, height), (0,0,0,0))
     transparent.paste(base_image, (0,0))
     transparent.paste(png, position, mask=png)
-    transparent.show() #to pop up changed detected image.
     transparent.save('media/'+output_image_path)
+    transparent.show() #to pop up changed detected image.
 
 def changedetection(beforeimagename,afterimagename_wo_ext):
   f1=os.path.abspath(os.path.join(MEDIA_ROOT, beforeimagename))
