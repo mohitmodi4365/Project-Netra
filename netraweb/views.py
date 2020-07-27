@@ -9,6 +9,8 @@ from cv2 import cv2
 import os
 from netra.settings import MEDIA_ROOT
 import base64
+import requests
+import time
 # i1=""
 # i2=""
 # file1=""
@@ -108,10 +110,22 @@ def feature_extraction(request):
                 print("##3444",filename)
 
         print(filename)
-        
-        response = str(base64.b64encode(open(filename,'rb').read()))
-        response=response[2:]
-        print(response)
+        start = time.time()
+        responsez = str(base64.b64encode(open('media/'+filename,'rb').read()))
+        responsez=responsez[2:]
+        data = {"imageUrl":responsez, "mode": "1"}
+        api_url = "http://13.68.181.120:5000/api/score-image"
+        response = requests.post(api_url, json={"imageUrl":responsez, "mode": "1"})
+        # response_Json = response.json()
+        # print(response.json())
+        img=response.json()
+        img=img[2:]
+        fh =open('media/mohit.jpg',mode='wb')
+        fh.write(base64.b64decode(img))
+        end = time.time()
+        print('Time Required:'+str(end - start))
+        base_image = Image.open('media/mohit.jpg')
+        base_image.show()
 
 
         
@@ -158,14 +172,14 @@ def merge(input_image_path,output_image_path,png_image_path,position):
 def changedetection(beforeimagename,afterimagename_wo_ext):
   f1=os.path.abspath(os.path.join(MEDIA_ROOT, beforeimagename))
 
-  image1 = cv2.imread(f1)
+  image11 = cv2.imread(f1)
   f2=os.path.abspath(os.path.join(MEDIA_ROOT, afterimagename_wo_ext+".jpg"))
   
-  image2 = cv2.imread(f2)
+  image21 = cv2.imread(f2)
   # image1 = cv2.imread(beforeimagename)
   # image2 = cv2.imread(afterimagename_wo_ext+".jpg")
-  # image1 = cv2.resize(image11, (480, 270)) 
-  # image2 = cv2.resize(image21, (480, 270))  
+  image1 = cv2.resize(image11, (480, 270)) 
+  image2 = cv2.resize(image21, (480, 270))  
 
 
   difference = cv2.absdiff(image1, image2)
@@ -207,9 +221,9 @@ def changedetection(beforeimagename,afterimagename_wo_ext):
 
   # cv2.imwrite('change in ' + beforeimagename, image1)
   # cv2.imwrite('change in ' + afterimagename, image2)
-  # difference1 = cv2.resize(difference,(1920,1080))
-  cv2.imwrite('media/diff in ' + afterimagename_wo_ext+'.png', difference)
-  cv2.imwrite('diff in ' + afterimagename_wo_ext+'.png', difference)
+  difference1 = cv2.resize(difference,(1920,1080))
+  cv2.imwrite('media/diff in ' + afterimagename_wo_ext+'.png', difference1)
+  cv2.imwrite('diff in ' + afterimagename_wo_ext+'.png', difference1)
 
   # fs=FileSystemStorage()
   # filename = fs.save(afterimagename_wo_ext+'.png', difference)
