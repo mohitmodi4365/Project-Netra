@@ -4,8 +4,10 @@ from netra import settings
 from django.conf.urls.static import static
 urlpatterns = [
     path("index",views.index,name="index"),
-    path('',views.change_det,name='change_det'),
+    path('change_det',views.change_det,name='change_det'),
+    path('time_det',views.time_det,name='time_det'),
     path('change_detection',views.change_detection,name='change_detection'),
+    path('change_detection2',views.change_detection2,name='change_detection2'),
     path('change_detection_result',views.change_detection_result,name='change_detection_result'),
     path('feature_extraction_result',views.feature_extraction_result,name='feature_extraction_result'),
     path('feature_extraction_result2',views.feature_extraction_result2,name='feature_extraction_result2'),
@@ -14,7 +16,7 @@ urlpatterns = [
     path('fea_ext',views.fea_ext,name='fea_ext'),
     path('login',views.login,name='login'),
     path('loader',views.loader,name='loader'),
-    path('new_login',views.new_login,name='new_login'),
+    path('',views.new_login,name='new_login'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)

@@ -11,6 +11,9 @@ from netra.settings import MEDIA_ROOT
 import base64
 import requests
 import time
+flag=0
+w=0
+h=0
 # i1=""
 # i2=""
 # file1=""
@@ -29,6 +32,9 @@ def login(request):
 
 def change_det(request):
   return render(request,"change_det.html")
+  
+def time_det(request):
+  return render(request,"time_det.html")
 
 def fea_ext(request):
   return render(request,"fea_ext.html")
@@ -65,7 +71,7 @@ def change_detection(request):
         i1 = change_d()
         i1.img=filename
         print(filename)
-        print(file1)
+        print("@@@@@@@@@@"+file1)
         print(i1)
         
         for file in request.FILES.getlist('myfile2'):
@@ -98,11 +104,13 @@ def change_detection(request):
 # afterimagename2='india pak after (960 x 540).jpg'
         merge(afterimagename, 'F&F '+afterimagename_wo_ext+'.png',next2, position=(0,0))
         print("@@@@@")
+        print(w)
+        print(h)
 
         i3 = change_d()
         i3.img='F&F '+afterimagename_wo_ext+'.png'
 
-        return render(request,"change_detection_result.html",{'i1':i1,'i2':i2,'i3':i3,'diff_in_image':diff_in_image})
+        return render(request,"change_detection_result.html",{'i1':i1,'i2':i2,'w':w,'h':h,'i3':i3,'diff_in_image':diff_in_image})
 
         # return change_detection_result(request,i1,i2,file1,file2)
         # return (request,"/change_detection_result",{'i1' : i1,'i2' : i2,'file1' : file1,'file2':file2})  
@@ -134,14 +142,20 @@ def feature_extraction(request):
         print('Time Required:'+str(end - start))
         base_image = Image.open('media/mohit.jpg')
         base_image.show()
-
-
+        print(base_image.size)
+        wi,hi=base_image.size
+        if wi >=1920:
+          w=600
+          h=340
+        else:
+          w=wi
+          h=hi
         i3 = change_d()
         i3.img='mohit.jpg'
 
         
     
-        return render(request,"feature_extraction_result.html",{'i3':i3})
+        return render(request,"feature_extraction_result.html",{'i3':i3,'w':w,'h':h})
         
 
 def feature_extraction2(request):
@@ -149,8 +163,11 @@ def feature_extraction2(request):
     if request.method == 'POST':
         i1=request.POST.get("i1")
         i3=request.POST.get("i3")
+        ima1=request.POST.get("image1")
+        ima2=request.POST.get("image2")
         diff_in_image=request.POST.get("diff_in_image")
-        print(i1)
+        print(ima1)
+        print(ima2)
         print(diff_in_image)
 
         start = time.time()
@@ -181,9 +198,10 @@ def feature_extraction2(request):
         # i1 = change_d()
         # i1.img=i1
         # i1='media/'+i1
-        
+        print(w)
+        print(h)
     
-        return render(request,"feature_extraction_result2.html",{'i1':i1,'i3':i3,'diff_in_image':diff_in_image})
+        return render(request,"feature_extraction_result2.html",{'i1':i1,'i3':i3,'w':w,'h':h,'ima1':ima1,'ima2':ima2,'diff_in_image':diff_in_image})
         
 def reversefotoDetectron(diffimage):
   img = Image.open(diffimage)
@@ -237,6 +255,49 @@ def mergeDetectron(input_image_path,output_image_path,png_image_path,position):
 
 
 
+def change_detection2(request):
+
+      
+        file1=request.GET.get("inputfile")
+        file2=request.GET.get("inputfile2")
+        print("@@@@@@@@")
+        print(file1)
+        print(file2)
+        # print(i1)
+        i1 = change_d()
+        i1.img=file1
+        i2 = change_d()
+        i2.img=file2
+
+        beforeimagename_wo_ext=os.path.splitext(file1)[0]
+        afterimagename_wo_ext=os.path.splitext(file2)[0]
+      
+        beforeimagename=beforeimagename_wo_ext+'.jpg'
+        afterimagename=afterimagename_wo_ext+'.jpg'
+
+        
+        print("@")
+        diff_in_image=changedetection(beforeimagename,afterimagename_wo_ext)
+        print("@@")
+
+        next=reversefoto(diff_in_image)
+        print("@@@")
+
+# diffimage2='nextdiff in india pak after (960 x 540).png'
+        next2=reversefotoa(next)
+        print("@@@@")
+
+# afterimagename2='india pak after (960 x 540).jpg'
+        merge(afterimagename, 'F&F '+afterimagename_wo_ext+'.png',next2, position=(0,0))
+        print("@@@@@")
+        print(w)
+        print(h)
+
+        i3 = change_d()
+        i3.img='F&F '+afterimagename_wo_ext+'.png'
+
+        return render(request,"change_detection_result.html",{'i1':i1,'i2':i2,'w':w,'h':h,'i3':i3,'diff_in_image':diff_in_image})
+  # return render(request,"time_det.html")
 
 
 
@@ -275,15 +336,17 @@ def merge(input_image_path,output_image_path,png_image_path,position):
 def changedetection(beforeimagename,afterimagename_wo_ext):
   f1=os.path.abspath(os.path.join(MEDIA_ROOT, beforeimagename))
 
-  image11 = cv2.imread(f1)
+  image1 = cv2.imread(f1)
   f2=os.path.abspath(os.path.join(MEDIA_ROOT, afterimagename_wo_ext+".jpg"))
   
-  image21 = cv2.imread(f2)
+  image2 = cv2.imread(f2)
   # image1 = cv2.imread(beforeimagename)
   # image2 = cv2.imread(afterimagename_wo_ext+".jpg")
-  image1 = cv2.resize(image11, (480, 270)) 
-  image2 = cv2.resize(image21, (480, 270))  
-
+  # print(image11.shape)
+  if image1.shape[1] >= 1920 :
+    print('hello')
+    image1 = cv2.resize(image1, (480, 270)) 
+    image2 = cv2.resize(image2, (480, 270))  
 
   difference = cv2.absdiff(image1, image2)
   # color the mask red
@@ -321,12 +384,19 @@ def changedetection(beforeimagename,afterimagename_wo_ext):
                       for j in range(0,boundingBox*2):
                           difference[x+i][y+j][2] = 0
                           
-
   # cv2.imwrite('change in ' + beforeimagename, image1)
   # cv2.imwrite('change in ' + afterimagename, image2)
-  difference1 = cv2.resize(difference,(1920,1080))
-  cv2.imwrite('media/diff in ' + afterimagename_wo_ext+'.png', difference1)
-  cv2.imwrite('diff in ' + afterimagename_wo_ext+'.png', difference1)
+  global w,h
+  w=256
+  h=256
+  if difference.shape[1] == 480 :
+    w=600
+    h=340
+    difference = cv2.resize(difference,(1920,1080))
+  print(w)
+  print(h)
+  cv2.imwrite('media/diff in ' + afterimagename_wo_ext+'.png', difference)
+  cv2.imwrite('diff in ' + afterimagename_wo_ext+'.png', difference)
 
   # fs=FileSystemStorage()
   # filename = fs.save(afterimagename_wo_ext+'.png', difference)
