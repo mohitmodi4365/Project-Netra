@@ -30,6 +30,9 @@ def index(request):
 def login(request):  
     return render(request,"login.html")      
 
+def surveillance(request):  
+    return render(request,"surveillance.html")      
+
 def change_det(request):
   return render(request,"change_det.html")
   
@@ -343,10 +346,12 @@ def changedetection(beforeimagename,afterimagename_wo_ext):
   # image1 = cv2.imread(beforeimagename)
   # image2 = cv2.imread(afterimagename_wo_ext+".jpg")
   # print(image11.shape)
+  i1shape=round(image1.shape[1] / 4)
   if image1.shape[1] >= 1920 :
     print('hello')
-    image1 = cv2.resize(image1, (480, 270)) 
-    image2 = cv2.resize(image2, (480, 270))  
+    image1 = cv2.resize(image1, ((round(image1.shape[1] / 4)), round(image1.shape[0] / 4))) 
+    image2 = cv2.resize(image2, (round(image2.shape[1] / 4), round(image2.shape[0] / 4))) 
+    # image2 = cv2.resize(image2, (480, 270))  
 
   difference = cv2.absdiff(image1, image2)
   # color the mask red
@@ -389,10 +394,10 @@ def changedetection(beforeimagename,afterimagename_wo_ext):
   global w,h
   w=256
   h=256
-  if difference.shape[1] == 480 :
+  if difference.shape[1] == i1shape :
     w=600
     h=340
-    difference = cv2.resize(difference,(1920,1080))
+    difference = cv2.resize(difference,(round(difference.shape[1] * 4),round(difference.shape[0] * 4)))
   print(w)
   print(h)
   cv2.imwrite('media/diff in ' + afterimagename_wo_ext+'.png', difference)
@@ -422,3 +427,99 @@ def reversefotoa(diffimage):
 
   return 'just'+diffimage
 
+############### surva ###########################################################
+
+
+def alerts(request):
+
+    
+        for file in request.FILES.getlist('myfile'):
+                fs = FileSystemStorage()
+                file1=file.name
+                filename = fs.save(file.name, file)
+                f1=os.path.abspath(os.path.join(MEDIA_ROOT, file1))
+
+
+        i1 = change_d()
+        i1.img=filename
+        print(filename)
+        print("@@@@@@@@@@"+file1)
+        print(i1)
+        
+        for file in request.FILES.getlist('myfile2'):
+                fs2 = FileSystemStorage()
+                file2=file.name
+                filename2 = fs2.save(file.name, file)
+                f2=os.path.abspath(os.path.join(MEDIA_ROOT, file2))
+
+        i2 = change_d()
+        i2.img=filename2
+        print(os.path.splitext(file1)[0])
+        beforeimagename_wo_ext=os.path.splitext(file1)[0]
+        afterimagename_wo_ext=os.path.splitext(file2)[0]
+      
+        beforeimagename=beforeimagename_wo_ext+'.jpg'
+        afterimagename=afterimagename_wo_ext+'.jpg'
+
+        
+        print("@")
+        diff_in_image=changedetection(beforeimagename,afterimagename_wo_ext)
+        print("@@")
+
+        next=reversefoto(diff_in_image)
+        print("@@@")
+
+# diffimage2='nextdiff in india pak after (960 x 540).png'
+        next2=reversefotoa(next)
+        print("@@@@")
+
+# afterimagename2='india pak after (960 x 540).jpg'
+        merge(afterimagename, 'F&F '+afterimagename_wo_ext+'.png',next2, position=(0,0))
+        print("@@@@@")
+        print(w)
+        print(h)
+
+        i3 = change_d()
+        i3.img='F&F '+afterimagename_wo_ext+'.png'
+
+        # return render(request,"change_detection_result.html",{'i1':i1,'i2':i2,'w':w,'h':h,'i3':i3,'diff_in_image':diff_in_image})
+        #################feature_ext2###########
+        
+
+        start = time.time()
+        responsez = str(base64.b64encode(open('media/'+filename2,'rb').read()))
+        responsez=responsez[2:]
+        api_url = "http://13.68.181.120:5000/api/score-image"
+        response = requests.post(api_url, json={"imageUrl":responsez, "mode": "0"})
+        # response_Json = response.json()
+        # print(response.json())
+        img=response.json()
+        img=img[2:]
+        fh =open('media/OutDetect.jpg',mode='wb')
+        fh.write(base64.b64decode(img))
+        end = time.time()
+        print('Time Required:'+str(end - start))
+
+        
+        next22=reversefotoDetectron('media/'+diff_in_image)
+        # Out_Detect="Out Detect "+afterimagename
+        output_image_path2=mergeDetectron('media/OutDetect.jpg', 'Some.png',next22, position=(0,0))
+        next33=reversefotoDetectron2(output_image_path2)
+        mergeDetectron('media/'+filename2, 'O.D.png',next33, position=(0,0))
+          
+        # base_image = Image.open('media/mohit.jpg')
+        # base_image.show()
+
+
+        # i1 = change_d()
+        # i1.img=i1
+        # i1='media/'+i1
+        print(w)
+        print(h)
+        ima1=filename2
+        ima2=filename
+
+        building=True
+    
+        return render(request,"surv_det.html",{'i1':i1,'i3':i3,'w':w,'h':h,'building':building,'ima1':ima1,'ima2':ima2,'diff_in_image':diff_in_image})
+        
