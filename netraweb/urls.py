@@ -15,8 +15,6 @@ urlpatterns = [
     path('feature_extraction2',views.feature_extraction2,name='feature_extraction2'),
     path('fea_ext',views.fea_ext,name='fea_ext'),
     path('surveillance',views.surveillance,name='surveillance'),
-    path('login',views.login,name='login'),
-    path('loader',views.loader,name='loader'),
     path('alerts',views.alerts,name='alerts'),
     path('',views.new_login,name='new_login'),
 ]

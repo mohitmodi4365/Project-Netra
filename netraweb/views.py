@@ -14,21 +14,10 @@ import time
 flag=0
 w=0
 h=0
-# i1=""
-# i2=""
-# file1=""
-# file2=""
-# beforeimagename=""
-# afterimagename=""
-# afterimagename_wo_ext=""
-# beforeimagename_wo_ext=""
 # Create your views here.
 
 def index(request):
-    return render(request,"index.html")
-
-def login(request):  
-    return render(request,"login.html")      
+    return render(request,"index.html")   
 
 def surveillance(request):  
     return render(request,"surveillance.html")      
@@ -41,9 +30,6 @@ def time_det(request):
 
 def fea_ext(request):
   return render(request,"fea_ext.html")
-
-def loader(request):
-  return render(request,"loader.html")
 
 def change_detection_result(request):
   
@@ -73,9 +59,7 @@ def change_detection(request):
 
         i1 = change_d()
         i1.img=filename
-        print(filename)
-        print("@@@@@@@@@@"+file1)
-        print(i1)
+     
         
         for file in request.FILES.getlist('myfile2'):
                 fs2 = FileSystemStorage()
@@ -92,31 +76,16 @@ def change_detection(request):
         beforeimagename=beforeimagename_wo_ext+'.jpg'
         afterimagename=afterimagename_wo_ext+'.jpg'
 
-        
-        print("@")
         diff_in_image=changedetection(beforeimagename,afterimagename_wo_ext)
-        print("@@")
-
         next=reversefoto(diff_in_image)
-        print("@@@")
-
-# diffimage2='nextdiff in india pak after (960 x 540).png'
         next2=reversefotoa(next)
-        print("@@@@")
-
-# afterimagename2='india pak after (960 x 540).jpg'
         merge(afterimagename, 'F&F '+afterimagename_wo_ext+'.png',next2, position=(0,0))
-        print("@@@@@")
-        print(w)
-        print(h)
 
+      
         i3 = change_d()
         i3.img='F&F '+afterimagename_wo_ext+'.png'
 
-        return render(request,"change_detection_result.html",{'i1':i1,'i2':i2,'w':w,'h':h,'i3':i3,'diff_in_image':diff_in_image})
-
-        # return change_detection_result(request,i1,i2,file1,file2)
-        # return (request,"/change_detection_result",{'i1' : i1,'i2' : i2,'file1' : file1,'file2':file2})  
+        return render(request,"change_detection_result.html",{'i1':i1,'i2':i2,'w':w,'h':h,'i3':i3,'diff_in_image':diff_in_image}) 
         
 
 
@@ -128,15 +97,14 @@ def feature_extraction(request):
                 filename = fs.save(file.name, file)
                 print("##3444",filename)
 
-        print(filename)
         start = time.time()
         responsez = str(base64.b64encode(open('media/'+filename,'rb').read()))
         responsez=responsez[2:]
         data = {"imageUrl":responsez, "mode": "1"}
+        #ip address of azure-VM instance
         api_url = "http://13.68.181.120:5000/api/score-image"
         response = requests.post(api_url, json={"imageUrl":responsez, "mode": "1"})
-        # response_Json = response.json()
-        # print(response.json())
+        
         img=response.json()
         img=img[2:]
         fh =open('media/mohit.jpg',mode='wb')
@@ -145,7 +113,7 @@ def feature_extraction(request):
         print('Time Required:'+str(end - start))
         base_image = Image.open('media/mohit.jpg')
         base_image.show()
-        print(base_image.size)
+        
         wi,hi=base_image.size
         if wi >=1920:
           w=600
@@ -169,17 +137,13 @@ def feature_extraction2(request):
         ima1=request.POST.get("image1")
         ima2=request.POST.get("image2")
         diff_in_image=request.POST.get("diff_in_image")
-        print(ima1)
-        print(ima2)
-        print(diff_in_image)
-
+       
         start = time.time()
         responsez = str(base64.b64encode(open('media/'+i1,'rb').read()))
         responsez=responsez[2:]
         api_url = "http://13.68.181.120:5000/api/score-image"
         response = requests.post(api_url, json={"imageUrl":responsez, "mode": "0"})
-        # response_Json = response.json()
-        # print(response.json())
+    
         img=response.json()
         img=img[2:]
         fh =open('media/OutDetect.jpg',mode='wb')
@@ -189,21 +153,11 @@ def feature_extraction2(request):
 
         
         next22=reversefotoDetectron('media/'+diff_in_image)
-        # Out_Detect="Out Detect "+afterimagename
+        
         output_image_path2=mergeDetectron('media/OutDetect.jpg', 'Some.png',next22, position=(0,0))
         next33=reversefotoDetectron2(output_image_path2)
         mergeDetectron('media/'+i1, 'O.D.png',next33, position=(0,0))
           
-        # base_image = Image.open('media/mohit.jpg')
-        # base_image.show()
-
-
-        # i1 = change_d()
-        # i1.img=i1
-        # i1='media/'+i1
-        print(w)
-        print(h)
-    
         return render(request,"feature_extraction_result2.html",{'i1':i1,'i3':i3,'w':w,'h':h,'ima1':ima1,'ima2':ima2,'diff_in_image':diff_in_image})
         
 def reversefotoDetectron(diffimage):
@@ -263,10 +217,7 @@ def change_detection2(request):
       
         file1=request.GET.get("inputfile")
         file2=request.GET.get("inputfile2")
-        print("@@@@@@@@")
-        print(file1)
-        print(file2)
-        # print(i1)
+        
         i1 = change_d()
         i1.img=file1
         i2 = change_d()
@@ -277,30 +228,20 @@ def change_detection2(request):
       
         beforeimagename=beforeimagename_wo_ext+'.jpg'
         afterimagename=afterimagename_wo_ext+'.jpg'
-
-        
-        print("@")
+      
         diff_in_image=changedetection(beforeimagename,afterimagename_wo_ext)
-        print("@@")
-
+      
         next=reversefoto(diff_in_image)
-        print("@@@")
-
-# diffimage2='nextdiff in india pak after (960 x 540).png'
+      
         next2=reversefotoa(next)
-        print("@@@@")
-
-# afterimagename2='india pak after (960 x 540).jpg'
+      
         merge(afterimagename, 'F&F '+afterimagename_wo_ext+'.png',next2, position=(0,0))
-        print("@@@@@")
-        print(w)
-        print(h)
-
+        
         i3 = change_d()
         i3.img='F&F '+afterimagename_wo_ext+'.png'
 
         return render(request,"change_detection_result.html",{'i1':i1,'i2':i2,'w':w,'h':h,'i3':i3,'diff_in_image':diff_in_image})
-  # return render(request,"time_det.html")
+
 
 
 
@@ -312,11 +253,11 @@ def reversefoto(diffimage):
   newData = []
   for item in datas:
       if item[0] == 255 and item[1] == 0 and item[2] == 0:
-          # newData.append((255, 255, 255, 0))
+          
           newData.append(item)
       else:
           newData.append((255, 255, 255, 0))
-          # newData.append((255, 0, 0, 255))
+          
         
   img.putdata(newData)
   img.save('next'+diffimage, "PNG")
@@ -343,16 +284,11 @@ def changedetection(beforeimagename,afterimagename_wo_ext):
   f2=os.path.abspath(os.path.join(MEDIA_ROOT, afterimagename_wo_ext+".jpg"))
   
   image2 = cv2.imread(f2)
-  # image1 = cv2.imread(beforeimagename)
-  # image2 = cv2.imread(afterimagename_wo_ext+".jpg")
-  # print(image11.shape)
   i1shape=round(image1.shape[1] / 4)
   if image1.shape[1] >= 1920 :
-    print('hello')
+    
     image1 = cv2.resize(image1, ((round(image1.shape[1] / 4)), round(image1.shape[0] / 4))) 
     image2 = cv2.resize(image2, (round(image2.shape[1] / 4), round(image2.shape[0] / 4))) 
-    # image2 = cv2.resize(image2, (480, 270))  
-
   difference = cv2.absdiff(image1, image2)
   # color the mask red
   Conv_hsv_Gray = cv2.cvtColor(difference, cv2.COLOR_BGR2GRAY)
@@ -389,8 +325,6 @@ def changedetection(beforeimagename,afterimagename_wo_ext):
                       for j in range(0,boundingBox*2):
                           difference[x+i][y+j][2] = 0
                           
-  # cv2.imwrite('change in ' + beforeimagename, image1)
-  # cv2.imwrite('change in ' + afterimagename, image2)
   global w,h
   w=256
   h=256
@@ -398,13 +332,10 @@ def changedetection(beforeimagename,afterimagename_wo_ext):
     w=600
     h=340
     difference = cv2.resize(difference,(round(difference.shape[1] * 4),round(difference.shape[0] * 4)))
-  print(w)
-  print(h)
+  
   cv2.imwrite('media/diff in ' + afterimagename_wo_ext+'.png', difference)
   cv2.imwrite('diff in ' + afterimagename_wo_ext+'.png', difference)
 
-  # fs=FileSystemStorage()
-  # filename = fs.save(afterimagename_wo_ext+'.png', difference)
   return 'diff in ' + afterimagename_wo_ext+'.png'
 
 
@@ -442,10 +373,7 @@ def alerts(request):
 
         i1 = change_d()
         i1.img=filename
-        print(filename)
-        print("@@@@@@@@@@"+file1)
-        print(i1)
-        
+     
         for file in request.FILES.getlist('myfile2'):
                 fs2 = FileSystemStorage()
                 file2=file.name
@@ -463,28 +391,16 @@ def alerts(request):
 
         start = time.time()
 
-        print("@") 
         diff_in_image=changedetection(beforeimagename,afterimagename_wo_ext)
-        print("@@")
 
         next=reversefoto(diff_in_image)
-        print("@@@")
-
-# diffimage2='nextdiff in india pak after (960 x 540).png'
         next2=reversefotoa(next)
-        print("@@@@")
-
-# afterimagename2='india pak after (960 x 540).jpg'
         merge(afterimagename, 'F&F '+afterimagename_wo_ext+'.png',next2, position=(0,0))
-        print("@@@@@")
-        print(w)
-        print(h)
         end = time.time()
         print('Time Required change:'+str(end - start))
         i3 = change_d()
         i3.img='F&F '+afterimagename_wo_ext+'.png'
 
-        # return render(request,"change_detection_result.html",{'i1':i1,'i2':i2,'w':w,'h':h,'i3':i3,'diff_in_image':diff_in_image})
         #################feature_ext2###########
         
 
@@ -492,10 +408,9 @@ def alerts(request):
         responsez = str(base64.b64encode(open('media/'+filename2,'rb').read()))
         responsez=responsez[2:]
         api_url = "http://13.68.181.120:5000/api/score-image"
-        # api_url = "http://127.0.0.1:5000/api/score-image"
+        # api_url = "http://127.0.0.1:5000/api/score-image" #for localhost
         response = requests.post(api_url, json={"imageUrl":responsez, "mode": "0"})
-        # response_Json = response.json()
-        # print(response.json())
+        
         img=response.json()
         img=img[2:]
         fh =open('media/OutDetect.jpg',mode='wb')
@@ -503,7 +418,7 @@ def alerts(request):
 
         
         next22=reversefotoDetectron('media/'+diff_in_image)
-        # Out_Detect="Out Detect "+afterimagename
+        
         output_image_path2=mergeDetectron('media/OutDetect.jpg', 'Some.png',next22, position=(0,0))
         next33=reversefotoDetectron2(output_image_path2)
         alt=mergeDetectron('media/'+filename2, 'O.D.png',next33, position=(0,0))
@@ -516,7 +431,6 @@ def alerts(request):
         img = Image.open(alt)
         width, height = img.size
         if width >= 1920 :
-          print("hello brother  ")
           img = img.resize((round(width / 4 ),round(height / 4)))
         img = img.convert("RGBA")
         datas = img.getdata()
@@ -526,8 +440,7 @@ def alerts(request):
         
         for item in datas:
             if (item[0]>222 and item[0]<251) and (item[1]>162 and item[1]<245) and (item[2]>40 and item[2]<145):
-                # newData.append((255, 255, 255, 0))
-                # print("yes")
+                
                 building=True
                 
             else:
@@ -536,21 +449,12 @@ def alerts(request):
 
               else:
                 newData.append((255, 255, 255, 0))
-                # print("No")
+                
                 building=False
 
         end = time.time()
         print('Time Required:'+str(end - start)) 
    
-        # base_image = Image.open('media/mohit.jpg')
-        # base_image.show()
-
-
-        # i1 = change_d()
-        # i1.img=i1
-        # i1='media/'+i1
-        print(w)
-        print(h)
         ima1=filename2
         ima2=filename
 
@@ -558,18 +462,3 @@ def alerts(request):
         return render(request,"surv_det.html",{'w':w,'h':h,'building':building})
         
 
-def alertshow(diffimage):
-  img = Image.open(diffimage)
-  img = img.convert("RGBA")
-  datas = img.getdata()
-
-  newData = []
-  for item in datas:
-      if (item[0]>222 and item[0]<251) and (item[1]>162 and item[1]<245) and (item[2]>40 and item[2]<145):
-          # newData.append((255, 255, 255, 0))
-          print("yes")
-					
-      else:
-          newData.append((255, 255, 255, 0))
-          
-  return 
