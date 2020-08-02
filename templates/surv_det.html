@@ -62,14 +62,20 @@
             <img src="/media/O.D.png" alt="" width="{{w}}" height="{{h}}">
 
           </div>
-        
+          {%if building == True%}
           <div class="col-sm-6">
             
-            <img src="/media/load/298.gif" alt="" width="400px">
-            <!-- <img src="/media/load/highAlertIcon.gif" alt="" width="256px" height="256px">
-            <h3>New Building Detected !!</h3> -->
+            <!-- <img src="/media/load/298.gif" alt="" width="400px"> -->
+            <img src="/media/load/highAlertIcon.gif" alt="" width="256px" height="256px">
+            <h3>New Building Detected !!</h3>
           </div>
-        
+          {%else%}
+          <div class="col-sm-6">
+            
+            <!-- <img src="/media/load/298.gif" alt="" width="400px"> -->
+            <h3>No Building Detected !!</h3>
+          </div>
+          {%endif%}
          </div>
     
 

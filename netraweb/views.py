@@ -461,8 +461,9 @@ def alerts(request):
         beforeimagename=beforeimagename_wo_ext+'.jpg'
         afterimagename=afterimagename_wo_ext+'.jpg'
 
-        
-        print("@")
+        start = time.time()
+
+        print("@") 
         diff_in_image=changedetection(beforeimagename,afterimagename_wo_ext)
         print("@@")
 
@@ -478,7 +479,8 @@ def alerts(request):
         print("@@@@@")
         print(w)
         print(h)
-
+        end = time.time()
+        print('Time Required change:'+str(end - start))
         i3 = change_d()
         i3.img='F&F '+afterimagename_wo_ext+'.png'
 
@@ -489,7 +491,8 @@ def alerts(request):
         start = time.time()
         responsez = str(base64.b64encode(open('media/'+filename2,'rb').read()))
         responsez=responsez[2:]
-        api_url = "http://13.68.181.120:5000/api/score-image"
+        # api_url = "http://13.68.181.120:5000/api/score-image"
+        api_url = "http://127.0.0.1:5000/api/score-image"
         response = requests.post(api_url, json={"imageUrl":responsez, "mode": "0"})
         # response_Json = response.json()
         # print(response.json())
@@ -497,16 +500,48 @@ def alerts(request):
         img=img[2:]
         fh =open('media/OutDetect.jpg',mode='wb')
         fh.write(base64.b64decode(img))
-        end = time.time()
-        print('Time Required:'+str(end - start))
 
         
         next22=reversefotoDetectron('media/'+diff_in_image)
         # Out_Detect="Out Detect "+afterimagename
         output_image_path2=mergeDetectron('media/OutDetect.jpg', 'Some.png',next22, position=(0,0))
         next33=reversefotoDetectron2(output_image_path2)
-        mergeDetectron('media/'+filename2, 'O.D.png',next33, position=(0,0))
-          
+        alt=mergeDetectron('media/'+filename2, 'O.D.png',next33, position=(0,0))
+        end = time.time()
+        print('Time Required:'+str(end - start))
+
+
+        start = time.time()
+
+        img = Image.open(alt)
+        width, height = img.size
+        if width >= 1920 :
+          print("hello brother  ")
+          img = img.resize((round(width / 4 ),round(height / 4)))
+        img = img.convert("RGBA")
+        datas = img.getdata()
+
+        newData = []
+        building=False
+        
+        for item in datas:
+            if (item[0]>222 and item[0]<251) and (item[1]>162 and item[1]<245) and (item[2]>40 and item[2]<145):
+                # newData.append((255, 255, 255, 0))
+                # print("yes")
+                building=True
+                
+            else:
+              if building==True:
+                break
+
+              else:
+                newData.append((255, 255, 255, 0))
+                # print("No")
+                building=False
+
+        end = time.time()
+        print('Time Required:'+str(end - start)) 
+   
         # base_image = Image.open('media/mohit.jpg')
         # base_image.show()
 
@@ -519,7 +554,22 @@ def alerts(request):
         ima1=filename2
         ima2=filename
 
-        building=True
     
-        return render(request,"surv_det.html",{'i1':i1,'i3':i3,'w':w,'h':h,'building':building,'ima1':ima1,'ima2':ima2,'diff_in_image':diff_in_image})
+        return render(request,"surv_det.html",{'w':w,'h':h,'building':building})
         
+
+def alertshow(diffimage):
+  img = Image.open(diffimage)
+  img = img.convert("RGBA")
+  datas = img.getdata()
+
+  newData = []
+  for item in datas:
+      if (item[0]>222 and item[0]<251) and (item[1]>162 and item[1]<245) and (item[2]>40 and item[2]<145):
+          # newData.append((255, 255, 255, 0))
+          print("yes")
+					
+      else:
+          newData.append((255, 255, 255, 0))
+          
+  return 
