@@ -491,8 +491,8 @@ def alerts(request):
         start = time.time()
         responsez = str(base64.b64encode(open('media/'+filename2,'rb').read()))
         responsez=responsez[2:]
-        # api_url = "http://13.68.181.120:5000/api/score-image"
-        api_url = "http://127.0.0.1:5000/api/score-image"
+        api_url = "http://13.68.181.120:5000/api/score-image"
+        # api_url = "http://127.0.0.1:5000/api/score-image"
         response = requests.post(api_url, json={"imageUrl":responsez, "mode": "0"})
         # response_Json = response.json()
         # print(response.json())
