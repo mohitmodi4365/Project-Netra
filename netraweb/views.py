@@ -102,8 +102,8 @@ def feature_extraction(request):
         responsez=responsez[2:]
         data = {"imageUrl":responsez, "mode": "1"}
         #ip address of azure-VM instance
-        api_url = "http://13.68.181.120:5000/api/score-image"
-        response = requests.post(api_url, json={"imageUrl":responsez, "mode": "1"})
+        app_url = "http://13.68.181.120:5000/app/score-image"
+        response = requests.post(app_url, json={"imageUrl":responsez, "mode": "1"})
         
         img=response.json()
         img=img[2:]
@@ -141,8 +141,8 @@ def feature_extraction2(request):
         start = time.time()
         responsez = str(base64.b64encode(open('media/'+i1,'rb').read()))
         responsez=responsez[2:]
-        api_url = "http://13.68.181.120:5000/api/score-image"
-        response = requests.post(api_url, json={"imageUrl":responsez, "mode": "0"})
+        app_url = "http://13.68.181.120:5000/app/score-image"
+        response = requests.post(app_url, json={"imageUrl":responsez, "mode": "0"})
     
         img=response.json()
         img=img[2:]
@@ -407,9 +407,9 @@ def alerts(request):
         start = time.time()
         responsez = str(base64.b64encode(open('media/'+filename2,'rb').read()))
         responsez=responsez[2:]
-        api_url = "http://13.68.181.120:5000/api/score-image"
-        # api_url = "http://127.0.0.1:5000/api/score-image" #for localhost
-        response = requests.post(api_url, json={"imageUrl":responsez, "mode": "0"})
+        app_url = "http://13.68.181.120:5000/app/score-image"
+        # app_url = "http://127.0.0.1:5000/app/score-image" #for localhost
+        response = requests.post(app_url, json={"imageUrl":responsez, "mode": "0"})
         
         img=response.json()
         img=img[2:]
