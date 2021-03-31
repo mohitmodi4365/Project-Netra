@@ -117,7 +117,7 @@
           </li> -->
           <li class="nav-item">
             <a href="{% url 'change_det' %}" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
+              <i class="nav-icon fas fa-tachometer-alt"></i>
               <p style="color: rgb(255, 255, 255)!important;">
                 Change Detection
               </p>
@@ -125,14 +125,14 @@
           </li>
           <li class="nav-item">
             <a href="{% url 'fea_ext' %}" class="nav-link">
-              <i class="nav-icon far fa-plus-square"></i>
+              <i class="nav-icon fas fa-th"></i>
               <p style="color: rgb(255, 255, 255)!important;">
 
                 Feature Extraction
               </p>
             </a>
           </li>
-         <li class="nav-item">
+         <!-- <li class="nav-item">
             <a href="{% url 'surveillance' %}" class="nav-link">
               <i class="nav-icon far fa-plus-square"></i>
               <p style="color: rgb(255, 255, 255)!important;">
@@ -140,7 +140,18 @@
                 Surveillance
               </p>
             </a>
+          </li>  -->
+          {% if request.session.user_type == "admin" %}
+          <li class="nav-item">
+            <a href="{% url 'manage_users' %}" class="nav-link">
+              <i class="nav-icon far fa-edit"></i>
+              <p style="color: rgb(255, 255, 255)!important;">
+               
+                Manage Users
+              </p>
+            </a>
           </li> 
+          {% endif %}
 <!-- 
           <li class="nav-item">
             <a href="{% url 'time_det' %}" class="nav-link">
@@ -153,7 +164,7 @@
           </li> -->
 
           <li class="nav-item">
-            <a href="{% url 'new_login' %}" class="nav-link">
+            <a href="{% url 'logout' %}" class="nav-link">
               <p style="color: rgb(255, 255, 255)!important;">
 
                 Logout
@@ -166,9 +177,7 @@
 
           </ul>
         </nav>
-        <!-- /.sidebar-menu -->
       </div>
-      <!-- /.sidebar -->
     </aside>
 
   {% block content %}

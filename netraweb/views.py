@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
-from .models import change_d
+from .models import change_d,user
 import cv2
 from PIL import Image
 import numpy as np
@@ -17,37 +17,154 @@ h=0
 # Create your views here.
 
 def index(request):
-    return render(request,"index.html")   
+  if "userid" not in request.session:
+        return new_login(request)
+
+  return render(request,"index.html")   
 
 def surveillance(request):  
-    return render(request,"surveillance.html")      
+  if "userid" not in request.session:
+        return new_login(request)
+
+  return render(request,"surveillance.html")      
 
 def change_det(request):
+
+  if request.method == "POST":
+    print(request.POST.get("email"))
+    print(request.POST.get("password"))
+
+    try:
+      userTB = user.objects.get(email_id=request.POST.get("email"),password=request.POST.get("password"))
+      if(userTB.user_status == "0"):
+        return render(request,"new_login.html",{"flg":True,"msg":"Your Account has been Deactivated, Contact Admin !!"})
+      else:
+          request.session['user_type'] = userTB.user_type
+          request.session['userid'] = userTB.id
+          request.session['flag'] = True
+          return render(request,"change_det.html",{"user_type":userTB.user_type})
+
+    except:
+      return render(request,"new_login.html",{"flg":True,"msg":"Incorrect Username or Password"})
+
   return render(request,"change_det.html")
   
 def time_det(request):
+  if "userid" not in request.session:
+        return new_login(request)
+
   return render(request,"time_det.html")
 
 def fea_ext(request):
+  if "userid" not in request.session:
+        return new_login(request)
+
   return render(request,"fea_ext.html")
 
 def change_detection_result(request):
+  if "userid" not in request.session:
+        return new_login(request)
   
-        render(request,"change_detection_result.html")
+  render(request,"change_detection_result.html")
   
 
 def feature_extraction_result(request,i3):
+  if "userid" not in request.session:
+        return new_login(request)
+
   return render(request,"feature_extraction_result.html")
 
 def feature_extraction_result2(request):
+  if "userid" not in request.session:
+        return new_login(request)
 
   return render(request,"feature_extraction_result2.html")
     
 def new_login(request):
+  if "userid" in request.session:
+        return change_det(request)
+
   return render(request,"new_login.html")
+
+def manage_users(request):
+  if "userid" not in request.session:
+        return new_login(request)
+
+  userTB = user.objects.all()
+  return render(request,"manage_users.html",{"userTB":userTB})
+
+
+
+def edit_user(request):
+  if "userid" not in request.session:
+        return new_login(request)
+
+  if request.method == "GET":
+    try:
+      userTB = user.objects.get(id=request.GET.get("userid"))
+      return render(request,"edit_user.html",{"userTB":userTB})
+    except:
+      pass
+  
+  if request.method == "POST":
+    try:
+      userTB = user.objects.get(id=request.POST.get("userid"))
+
+      activatenow = 0
+      if(request.POST.get("activatenow") == "on"):
+        activatenow = 1
+
+
+      userTB.fullname = request.POST.get("fullname")
+      userTB.email_id = request.POST.get("email")
+      userTB.password = request.POST.get("password")
+      userTB.user_type = request.POST.get("usertype")
+      userTB.user_status = activatenow
+      userTB.save()
+    except:
+      pass
+  return manage_users(request)
+
+
+def delete_user(request):
+  if "userid" not in request.session:
+        return new_login(request)
+
+  if request.method == "GET":
+    try:
+      userTB = user.objects.get(id=request.GET.get("userid"))
+      userTB.delete()
+    except:
+      pass
+
+  return manage_users(request)
+
+
+def register_user(request):
+  if "userid" not in request.session:
+        return new_login(request)
+
+  if request.method == "POST":
+    activatenow = 0
+    if(request.POST.get("activatenow") == "on"):
+      activatenow = 1
+
+    user.objects.create(fullname=request.POST.get("fullname"),
+                        email_id=request.POST.get("email"),
+                        password=request.POST.get("password"),
+                        user_type=request.POST.get("usertype"),
+                        user_status=activatenow)
+
+    return manage_users(request)
+
+
+  return render(request,"register_user.html")
 
 
 def change_detection(request):
+        if "userid" not in request.session:
+              return new_login(request)
+
 
     
         for file in request.FILES.getlist('myfile'):
@@ -90,6 +207,8 @@ def change_detection(request):
 
 
 def feature_extraction(request):
+        if "userid" not in request.session:
+          return new_login(request)
 
     
         for file in request.FILES.getlist('fmyfile'):
@@ -130,6 +249,8 @@ def feature_extraction(request):
         
 
 def feature_extraction2(request):
+    if "userid" not in request.session:
+        return new_login(request)
 
     if request.method == 'POST':
         i1=request.POST.get("i1")
@@ -161,6 +282,7 @@ def feature_extraction2(request):
         return render(request,"feature_extraction_result2.html",{'i1':i1,'i3':i3,'w':w,'h':h,'ima1':ima1,'ima2':ima2,'diff_in_image':diff_in_image})
         
 def reversefotoDetectron(diffimage):
+
   img = Image.open(diffimage)
   img = img.convert("RGBA")
   datas = img.getdata()
@@ -213,6 +335,8 @@ def mergeDetectron(input_image_path,output_image_path,png_image_path,position):
 
 
 def change_detection2(request):
+        if "userid" not in request.session:
+          return new_login(request)
 
       
         file1=request.GET.get("inputfile")
@@ -362,6 +486,8 @@ def reversefotoa(diffimage):
 
 
 def alerts(request):
+        if "userid" not in request.session:
+          return new_login(request)
 
     
         for file in request.FILES.getlist('myfile'):
@@ -462,3 +588,16 @@ def alerts(request):
         return render(request,"surv_det.html",{'w':w,'h':h,'building':building})
         
 
+def logout(request):
+    if "userid" not in request.session:
+          return new_login(request)
+  
+    try:
+        del request.session['userid']
+        del request.session['flag']
+        del request.session['user_type']
+    except:
+        pass
+
+    return new_login(request)
+    

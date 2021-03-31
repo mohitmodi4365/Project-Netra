@@ -58,10 +58,10 @@
 
           </div>
         </div>
+      
 
-
-        <form role="form" id="quickForm" action="{% url 'change_detection'%}" method="POST"
-          enctype="multipart/form-data"> 
+         <form role="form" id="quickForm" action="{% url 'change_detection'%}" method="POST"
+          enctype="multipart/form-data" onsubmit="return validateForm()"> 
 
 
           <div>
@@ -78,8 +78,8 @@
               </div>
             </div>
             <div style="padding-top : 20px;">
-              <input type="submit" class="btn btn-primary" onclick="loaderdispaly(event)" id="change_det1"
-                value="Detect Change" />
+              <button type="submit" class="btn btn-primary" id="change_det1"
+                value="submit">Detect Change</button>
             </div>
 
           </div>
@@ -91,7 +91,20 @@
 </div>
 <script>
   var preloader = document.getElementById("loading");
+  var file = document.getElementById("inputfile"); 
+  var file2 = document.getElementById("inputfile2"); 
 
+ 
+  function validateForm() { 
+      if(file.files.length == 0 || file2.files.length==0 ){ 
+          alert("Please Select All the files.");
+          return false;
+      } else { 
+          loaderdispaly();
+          return true;
+      } 
+  } 
+  
   function myFunction() {
     preloader.style.display = 'none';
   };

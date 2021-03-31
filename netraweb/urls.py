@@ -15,8 +15,13 @@ urlpatterns = [
     path('feature_extraction2',views.feature_extraction2,name='feature_extraction2'),
     path('fea_ext',views.fea_ext,name='fea_ext'),
     path('surveillance',views.surveillance,name='surveillance'),
+    path('manage_users',views.manage_users,name='manage_users'),
+    path('register_user',views.register_user,name='register_user'),
     path('alerts',views.alerts,name='alerts'),
     path('',views.new_login,name='new_login'),
+    path('edit_user',views.edit_user,name='edit_user'),
+    path('delete_user',views.delete_user,name='delete_user'),
+    path('logout',views.logout,name='logout'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
