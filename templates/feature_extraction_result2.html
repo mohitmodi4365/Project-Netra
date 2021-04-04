@@ -1,8 +1,8 @@
-{% extends 'base.html' %}
-{% block content %}
-
-{% load static %}
-<link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/load.css' %}">
+{% extends 'base.html' %} {% block content %} {% load static %}
+<link
+  rel="stylesheet"
+  href="{% static 'plugins/fontawesome-free/css/load.css' %}"
+/>
 <style>
   * {
     box-sizing: border-box;
@@ -37,53 +37,60 @@
   }
 </style>
 
-
-
-
-
 <div class="content-wrapper">
   <div id="loading"></div>
 
-
   <section class="content">
-
     <!-- Default box -->
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title" style="font-size: xx-large!important;">Feature Extraction</h3>
+        <h3 class="card-title" style="font-size: xx-large !important">
+          Feature Extraction
+        </h3>
         <div class="card-tools">
-          <ul class="nav nav-pills ml-auto" style="padding-right: 300px;">
-            <li class="nav-item" style="padding-right: 45px;">
-              <a class="nav-link active" href="#" data-toggle="tab"  style="background-color:gold;font-size: x-large;color: black;">Buildings</a>
+          <ul class="nav nav-pills ml-auto" style="padding-right: 300px">
+            <li class="nav-item" style="padding-right: 45px">
+              <a
+                class="nav-link active"
+                href="#"
+                data-toggle="tab"
+                style="background-color: gold; font-size: x-large; color: black"
+                >Buildings</a
+              >
             </li>
-            <li class="nav-item" style="padding-right: 10px;">
-              <a class="nav-link active" href="#" data-toggle="tab" style="background-color: cornflowerblue;font-size: x-large;color: black;">Water</a>
+            <li class="nav-item" style="padding-right: 10px">
+              <a
+                class="nav-link active"
+                href="#"
+                data-toggle="tab"
+                style="
+                  background-color: cornflowerblue;
+                  font-size: x-large;
+                  color: black;
+                "
+                >Water</a
+              >
             </li>
-
           </ul>
-      
         </div>
       </div>
-      <div class="card-body" style="height: 800px;">
- 
+      <div class="card-body" style="height: 800px">
         <div class="row-mb-3">
           <div class="img-comp-container col-sm-6">
             <div class="img-comp-img">
-              <img src="/media/{{ima2}}" width="{{w}}" height="{{h}}">
+              <img src="/media/{{ima2}}" width="{{w}}" height="{{h}}" />
             </div>
             <div class="img-comp-img img-comp-overlay">
-              <img src="/media/{{ima1}}" width="{{w}}" height="{{h}}">
+              <img src="/media/{{ima1}}" width="{{w}}" height="{{h}}" />
             </div>
           </div>
-        
-          <div class="row-mb-3" style="padding-left:950px;">
-      
-            <img src="/media/load/yellow.png" weight="200" height="350" >
-            <img src="/media/load/blue.png" weight="200" height="350">
 
+          <div class="row-mb-3" style="padding-left: 950px">
+            <img src="/media/load/yellow.png" weight="200" height="350" />
+            <img src="/media/load/blue.png" weight="200" height="350" />
           </div>
-          
-            <!-- <ul class="nav nav-pills ml-auto"  >
+
+          <!-- <ul class="nav nav-pills ml-auto"  >
               <li class="nav-item" style="padding: 10px;text-align: center;">
                 <a class="nav-link active" href="#" data-toggle="tab" style="background-color: cornflowerblue;width: 238px;
                 font-size: 50px;
@@ -95,60 +102,59 @@
                 height: 100px;">Buildings</a>
               </li>
             </ul> -->
-         
         </div>
-        <div class="row mb-3" style="padding-top: 50px; padding-left: 7px;">
-          
+        <div class="row mb-3" style="padding-top: 50px; padding-left: 7px">
           <div class="col-sm-6">
-            <img src="/media/{{i3}}" alt="" width="{{w}}" height="{{h}}">
-
+            <img src="/media/{{i3}}" alt="" width="{{w}}" height="{{h}}" />
           </div>
           <div class="col-sm-6">
-            <img src="/media/O.D.png" alt="" width="{{w}}" height="{{h}}">
-
+            <img src="/media/O.D.png" alt="" width="{{w}}" height="{{h}}" />
           </div>
-      </div>
+        </div>
         <!-- <button type="button" name="check_sentiments" id="check_sentiments"  onclick="">Check Sentiments</button> -->
-      
       </div>
       <!-- /.card-body -->
     </div>
     <!-- /.card -->
-
   </section>
   <!-- /.content -->
   <!-- /.content -->
-
 </div>
-	<style>
-		/* This only works with JavaScript, 
+<style>
+  /* This only works with JavaScript, 
 		   if it's not present, don't show loader */
-		.no-js #loader { display: none;  }
-		.js #loader { display: block; position: absolute; left: 100px; top: 0; }
-	</style>
-	
-	
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
-	
-	
-	<script src="https://github.com/Modernizr/Modernizr/raw/master/modernizr.js"></script>
-	<script>
-    
-		// Wait for window load
-		$(window).load(function() {
-			// Animate loader off screen
-			$("#loader").animate({
-				top: -200
-			}, 1500);
-		});
-	</script>	
-<script>
-    var preloader = document.getElementById("loading");
-    function myFunction(){
-      preloader.style.display = 'none';
-    };
+  .no-js #loader {
+    display: none;
+  }
+  .js #loader {
+    display: block;
+    position: absolute;
+    left: 100px;
+    top: 0;
+  }
+</style>
 
-    
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+
+<script src="https://github.com/Modernizr/Modernizr/raw/master/modernizr.js"></script>
+<script>
+  // Wait for window load
+  $(window).load(function () {
+    // Animate loader off screen
+    $("#loader").animate(
+      {
+        top: -200,
+      },
+      1500
+    );
+  });
+</script>
+<script>
+  var preloader = document.getElementById("loading");
+  function myFunction() {
+    preloader.style.display = "none";
+  }
+
   function initComparisons() {
     var x, i;
     /*find all elements with an "overlay" class:*/
@@ -160,21 +166,24 @@
     }
 
     function compareImages(img) {
-      var slider, img, clicked = 0,
-        w, h;
+      var slider,
+        img,
+        clicked = 0,
+        w,
+        h;
       /*get the width and height of the img element*/
       w = img.offsetWidth;
       h = img.offsetHeight;
       /*set the width of the img element to 50%:*/
-      img.style.width = (w / 2) + "px";
+      img.style.width = w / 2 + "px";
       /*create slider:*/
       slider = document.createElement("DIV");
       slider.setAttribute("class", "img-comp-slider");
       /*insert slider*/
       img.parentElement.insertBefore(slider, img);
       /*position the slider in the middle:*/
-      slider.style.top = (h / 2) - (slider.offsetHeight / 2) + "px";
-      slider.style.left = (w / 2) - (slider.offsetWidth / 2) + "px";
+      slider.style.top = h / 2 - slider.offsetHeight / 2 + "px";
+      slider.style.left = w / 2 - slider.offsetWidth / 2 + "px";
       /*execute a function when the mouse button is pressed:*/
       slider.addEventListener("mousedown", slideReady);
       /*and another function when the mouse button is released:*/
@@ -204,7 +213,7 @@
         /*if the slider is no longer clicked, exit this function:*/
         if (clicked == 0) return false;
         /*get the cursor's x position:*/
-        pos = getCursorPos(e)
+        pos = getCursorPos(e);
         /*prevent the slider from being positioned outside the image:*/
         if (pos < 0) pos = 0;
         if (pos > w) pos = w;
@@ -213,7 +222,8 @@
       }
 
       function getCursorPos(e) {
-        var a, x = 0;
+        var a,
+          x = 0;
         e = e || window.event;
         /*get the x positions of the image:*/
         a = img.getBoundingClientRect();
@@ -228,7 +238,7 @@
         /*resize the image:*/
         img.style.width = x + "px";
         /*position the slider:*/
-        slider.style.left = img.offsetWidth - (slider.offsetWidth / 2) + "px";
+        slider.style.left = img.offsetWidth - slider.offsetWidth / 2 + "px";
       }
     }
   }

@@ -47,6 +47,7 @@
           </thead>
           <tbody>
           {% for item in userTB %}
+          {% if item.user_type != "admin" %}
           <tr>
             <td>{{item.id}}</td>
             <td>{{item.fullname}}</td>
@@ -101,20 +102,11 @@
             </div>  
             </td>
           </tr>
+          {% endif %}
           {% endfor %}
           
          
           </tbody>
-          <tfoot>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>User Type</th>
-            <th>User Status</th>
-            <td></td>
-          </tr>
-          </tfoot>
         </table>
       </div>
       <!-- /.card-body -->
