@@ -34,18 +34,21 @@ def change_det(request):
     print(request.POST.get("email"))
     print(request.POST.get("password"))
 
-    try:
-      userTB = user.objects.get(email_id=request.POST.get("email"),password=request.POST.get("password"))
-      if(userTB.user_status == "0"):
-        return render(request,"new_login.html",{"flg":True,"msg":"Your Account has been Deactivated, Contact Admin !!"})
-      else:
-          request.session['user_type'] = userTB.user_type
-          request.session['userid'] = userTB.id
-          request.session['flag'] = True
-          return render(request,"change_det.html",{"user_type":userTB.user_type})
+  if(request.POST.get("email")== "" or request.POST.get("password")==""):
+        return render(request,"new_login.html",{"flg":True,"msg":"Please fill up all the details"})
+  try:
+    userTB = user.objects.get(email_id=request.POST.get("email"),password=request.POST.get("password"))
+        
+    if(userTB.user_status == "0"):
+      return render(request,"new_login.html",{"flg":True,"msg":"Your Account has been Deactivated, Contact Admin !!"})
+    else:
+      request.session['user_type'] = userTB.user_type
+      request.session['userid'] = userTB.id
+      request.session['flag'] = True
+      return render(request,"change_det.html",{"user_type":userTB.user_type})
 
-    except:
-      return render(request,"new_login.html",{"flg":True,"msg":"Incorrect Username or Password"})
+  except:
+    return render(request,"new_login.html",{"flg":True,"msg":"Incorrect Username or Password"})
 
   return render(request,"change_det.html")
   
@@ -107,6 +110,14 @@ def edit_user(request):
       pass
   
   if request.method == "POST":
+
+    if(request.POST.get("fullname")== "" or request.POST.get("email")=="" or request.POST.get("password")==""):
+      userTB = user.objects.get(id=request.POST.get("userid"))
+      return render(request,"edit_user.html",{"flg":True,"msg":"Please fill up all the details","userTB":userTB})
+
+    if(request.POST.get("password")!=request.POST.get("confirmpassword")):
+      return render(request,"edit_user.html",{"flg":True,"msg":"Password does not match."})
+
     try:
       userTB = user.objects.get(id=request.POST.get("userid"))
 
@@ -143,6 +154,12 @@ def delete_user(request):
 def register_user(request):
   if "userid" not in request.session:
         return new_login(request)
+
+  if(request.POST.get("fullname")== "" or request.POST.get("email")=="" or request.POST.get("password")=="" or request.POST.get("usertype")=="" or request.POST.get("activatenow") == ""):
+    return render(request,"register_user.html",{"flg":True,"msg":"Please fill up all the details"})
+
+  if(request.POST.get("password")!=request.POST.get("confirmpassword")):
+    return render(request,"register_user.html",{"flg":True,"msg":"Password does not match."})
 
   if request.method == "POST":
     activatenow = 0
@@ -221,7 +238,7 @@ def feature_extraction(request):
         responsez=responsez[2:]
         data = {"imageUrl":responsez, "mode": "1"}
         #ip address of azure-VM instance
-        app_url = "http://13.68.181.120:5000/app/score-image"
+        app_url = "http://52.249.253.12:5000/app/score-image"
         response = requests.post(app_url, json={"imageUrl":responsez, "mode": "1"})
         
         img=response.json()
@@ -262,7 +279,7 @@ def feature_extraction2(request):
         start = time.time()
         responsez = str(base64.b64encode(open('media/'+i1,'rb').read()))
         responsez=responsez[2:]
-        app_url = "http://13.68.181.120:5000/app/score-image"
+        app_url = "http://52.249.253.12:5000/app/score-image"
         response = requests.post(app_url, json={"imageUrl":responsez, "mode": "0"})
     
         img=response.json()
