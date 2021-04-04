@@ -30,6 +30,9 @@ def surveillance(request):
 
 def change_det(request):
 
+  if "userid" in request.session:
+    return render(request,"change_det.html",{"user_type":request.session['user_type']})
+
   if request.method == "POST":
     print(request.POST.get("email"))
     print(request.POST.get("password"))
@@ -238,7 +241,7 @@ def feature_extraction(request):
         responsez=responsez[2:]
         data = {"imageUrl":responsez, "mode": "1"}
         #ip address of azure-VM instance
-        app_url = "http://52.249.253.12:5000/app/score-image"
+        app_url = "http://52.188.63.228:5000/app/score-image"
         response = requests.post(app_url, json={"imageUrl":responsez, "mode": "1"})
         
         img=response.json()
@@ -279,7 +282,7 @@ def feature_extraction2(request):
         start = time.time()
         responsez = str(base64.b64encode(open('media/'+i1,'rb').read()))
         responsez=responsez[2:]
-        app_url = "http://52.249.253.12:5000/app/score-image"
+        app_url = "http://52.188.63.228:5000/app/score-image"
         response = requests.post(app_url, json={"imageUrl":responsez, "mode": "0"})
     
         img=response.json()
